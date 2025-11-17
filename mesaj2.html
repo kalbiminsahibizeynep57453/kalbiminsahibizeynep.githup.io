@@ -13,12 +13,10 @@ body {
   color: #3B0A0A;
   text-align: center;
   padding: 50px 20px;
-  position: relative;
-  min-height: 50vh;
   overflow-x: hidden;
-  max-width: 100%;
 }
 
+/* BAŞLIK */
 h1 {
   font-size: 2em;
   margin-bottom: 30px;
@@ -26,24 +24,30 @@ h1 {
   animation: fadeIn 1s ease-in;
 }
 
+/* MESAJ KUTUSU */
 .message-text {
   white-space: pre-line;
   background-color: rgba(255,245,245,0.9);
   display: inline-block;
-  padding: 130px 80px;
+  padding: 40px 20px;
   border-radius: 15px;
-  font-size: 1em;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  position: relative;
-  animation: fadeIn 2s ease-in;
+  font-size: 1.1em;
   max-width: 95%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Fotoğraflar */
+/* FOTOĞRAFLAR → 1. KOD İLE AYNI TASARIM */
+.photo-row {
+  margin: 30px auto 10px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
 .photo {
-  position: absolute;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  width: 70px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: transform 0.3s;
 }
 
@@ -51,7 +55,15 @@ h1 {
   transform: scale(1.05);
 }
 
-/* Butonlar ve Linkler */
+/* KALPLER */
+.floating-heart {
+  position: absolute;
+  font-size: 24px;
+  animation: floatHeart 6s infinite;
+  opacity: 0.8;
+}
+
+/* BUTONLAR */
 button, a {
   margin-top: 20px;
   background-color: #F5C2C2;
@@ -62,23 +74,10 @@ button, a {
   cursor: pointer;
   font-weight: bold;
   font-size: 1em;
-  transition: background 0.3s;
   text-decoration: none;
 }
 
-button:hover, a:hover {
-  background-color: #E8C07D;
-}
-
-/* Kalpler */
-.floating-heart {
-  position: absolute;
-  font-size: 24px;
-  animation: floatHeart 6s infinite;
-  opacity: 0.8;
-}
-
-/* Animasyonlar */
+/* ANİMASYONLAR */
 @keyframes fadeIn {
   from {opacity: 0; transform: translateY(20px);}
   to {opacity: 1; transform: translateY(0);}
@@ -90,68 +89,31 @@ button:hover, a:hover {
   100% {transform: translateY(0px) rotate(-10deg); opacity: 0.7;}
 }
 
-.spark {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #E8C07D;
-  border-radius: 50%;
-  opacity: 0.8;
-  animation: sparkle 1.5s linear infinite;
-}
-
-@keyframes sparkle {
-  0% {transform: translateY(0) scale(1); opacity: 0.7;}
-  50% {transform: translateY(-30px) scale(1); opacity: 1;}
-  100% {transform: translateY(0) scale(0.5); opacity: 0;}
-}
-
-/* 📱 MOBİL UYUM */
+/* MOBİL UYUMLU */
 @media (max-width: 600px) {
 
-  h1 {
-    font-size: 1.6em;
+  h1 { font-size: 1.6em; }
+
+  .message-text { padding: 25px 15px; }
+
+  .photo-row {
+    gap: 10px;
   }
 
-  .message-text {
-    padding: 80px 20px;
-    font-size: 1em;
-  }
-
-  /* Fotoğrafların mobilde ekran dışına taşmaması için */
   .photo {
-    width: 120px !important;
-    height: auto;
+    width: 90px;
   }
 
-  /* Konum düzeni – görsel açıları korunuyor */
-  .photo:nth-of-type(1) {
-    top: 160px !important;
-    right: 10px !important;
-  }
-
-  .photo:nth-of-type(2) {
-    top: 160px !important;
-    left: 10px !important;
-    width: 180px !important;
-  }
-
-  .photo:nth-of-type(3) {
-    top: 320px !important;
-    right: 20px !important;
-  }
-
-  /* Butonlar */
   a {
     display: inline-block;
     width: 75%;
     margin: 10px auto;
-    font-size: 1em;
   }
 }
 
 </style>
 </head>
+
 <body>
 
 <h1>Sen benim en büyük şansımsın Huzurum... 💖</h1>
@@ -165,36 +127,23 @@ ve sana bağlanmaya başladım hayatımın merkezi haline geldin
 Benim için artık dünya sadece senin etrafında dönüyor Zeynebim ❤️
 </div>
 
-<!-- Fotoğraflar -->
-<img src="images/mesaj2-1.jpg" class="photo" style="top:200px; right:250px; width:160px; transform: rotate(-60deg);">
-<img src="images/mesaj2-2.jpg" class="photo" style="top:200px; left:120px; width:250px; transform: rotate(-20deg);">
-<img src="images/mesaj2-3.jpg" class="photo" style="top:280px; right:80px; width:170px; transform: rotate(0deg);">
+<!-- YAN YANA 3 FOTOĞRAF (1. KODDAN BİREBİR) -->
+<div class="photo-row">
+  <img src="images/mesaj2-1.jpg" class="photo">
+  <img src="images/mesaj2-2.jpg" class="photo">
+  <img src="images/mesaj2-3.jpg" class="photo">
+</div>
 
-<!-- Kalpler -->
+<!-- KALPLER -->
 <div class="floating-heart" style="left:10%; top:80%;">💖</div>
 <div class="floating-heart" style="left:50%; top:90%;">💌</div>
 <div class="floating-heart" style="left:80%; top:75%;">💖</div>
 
-<!-- Butonlar -->
-<div style="text-align: center; margin-top: 20px;">
+<!-- BUTONLAR -->
+<div style="text-align:center; margin-top:20px;">
   <a href="mesaj1.html" style="background-color: #555;">⬅ Geri</a>
   <a href="mesaj3.html" style="background-color: #ff4081;">İleri ➡</a>
 </div>
-
-<script>
-function createSparks() {
-  const count = 10;
-  for (let i = 0; i < count; i++) {
-    const spark = document.createElement('div');
-    spark.className = 'spark';
-    spark.style.left = Math.random() * window.innerWidth + 'px';
-    spark.style.top = Math.random() * window.innerHeight + 'px';
-    document.body.appendChild(spark);
-    setTimeout(() => { spark.remove(); }, 1500);
-  }
-}
-setInterval(createSparks, 1000);
-</script>
 
 </body>
 </html>
