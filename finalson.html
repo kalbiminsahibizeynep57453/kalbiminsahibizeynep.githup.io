@@ -15,6 +15,7 @@
         font-family: 'Playfair Display', serif;
         color: white;
         text-align: center;
+        position: relative;
     }
 
     /* Yıldızlar */
@@ -33,7 +34,7 @@
         100% { transform: translateY(120vh) scale(0.4); opacity: 0; }
     }
 
-    /* Ortadaki portal */
+    /* Portal */
     #portal {
         position: absolute;
         top: 50%;
@@ -45,6 +46,7 @@
         background: radial-gradient(circle, rgba(255,255,255,0.7), rgba(255,0,140,0.3), rgba(255,0,150,0));
         box-shadow: 0 0 50px rgba(255,255,255,0.6), 0 0 150px #ff008c;
         animation: pulse 4s infinite ease-in-out;
+        z-index: 1;
     }
 
     @keyframes pulse {
@@ -53,13 +55,15 @@
         100% { transform: translate(-50%, -50%) scale(1); }
     }
 
+    /* Halkalar */
     .ring {
         border: 4px solid rgba(255,255,255,0.6);
         border-radius: 50%;
         position: absolute;
         top: 50%; left: 50%;
         transform: translate(-50%, -50%);
-        animation: rotate 10s linear infinite;
+        animation: rotate linear infinite;
+        z-index: 0;
     }
 
     .ring.r1 { width: 340px; height: 340px; animation-duration: 14s; }
@@ -71,19 +75,21 @@
         100% { transform: translate(-50%, -50%) rotate(360deg); }
     }
 
-    /* MESAJ — ORTAYA TAŞINDI */
+    /* Mesaj */
     #message {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
         width: 80%;
+        transform: translate(-50%, -50%);
         opacity: 0;
         font-size: 1.4em;
         line-height: 1.7em;
         animation: fadeIn 4s forwards;
         animation-delay: 3s;
         text-shadow: 0 0 10px rgba(255,255,255,0.9);
+        z-index: 2;
+        white-space: pre-line;
     }
 
     @keyframes fadeIn {
@@ -99,11 +105,7 @@
         opacity: 0;
         animation: fadeInButtons 3s forwards;
         animation-delay: 6s;
-    }
-
-    @keyframes fadeInButtons {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        z-index: 5;
     }
 
     .btn {
@@ -122,6 +124,56 @@
     .btn:hover {
         transform: scale(1.08);
         background: #ffe6f3;
+    }
+
+    @keyframes fadeInButtons {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* 📱 MOBİL UYUM */
+    @media (max-width: 600px) {
+
+        #portal {
+            width: 240px;
+            height: 240px;
+        }
+
+        .ring.r1 { width: 260px; height: 260px; }
+        .ring.r2 { width: 295px; height: 295px; }
+        .ring.r3 { width: 330px; height: 330px; }
+
+        #message {
+            font-size: 1.1em;
+            width: 85%;
+        }
+
+        .btn {
+            padding: 10px 22px;
+            font-size: 1em;
+            margin: 8px;
+        }
+
+        #buttons {
+            bottom: 20px;
+        }
+    }
+
+    @media (max-width: 400px) {
+
+        #portal {
+            width: 200px;
+            height: 200px;
+        }
+
+        .ring.r1 { width: 230px; height: 230px; }
+        .ring.r2 { width: 260px; height: 260px; }
+        .ring.r3 { width: 290px; height: 290px; }
+
+        #message {
+            font-size: 1em;
+            width: 90%;
+        }
     }
 </style>
 </head>
@@ -148,7 +200,7 @@ for (let i = 0; i < 70; i++) {
 
 <!-- Mesaj -->
 <div id="message">
-   💖 Seni okadar çok seviyorum ki bu sevgiyi hiç bir şekilde
+💖 Seni okadar çok seviyorum ki bu sevgiyi hiç bir şekilde
 tarif edemiyorum ne söylersam söyliyim ne yaparsam yapayım
 hep eksik kalıyor, sana seni nekadar çok seviğimi söyleyemiyorum
 ama belki hissetirebilirim diye düşündüm, bu yüzden sana böyle bir

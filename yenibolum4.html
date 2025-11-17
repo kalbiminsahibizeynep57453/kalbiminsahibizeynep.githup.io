@@ -21,12 +21,16 @@
     #game {
         display: flex;
         gap: 25px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        max-width: 95%;
     }
 
     /* Sol taraftaki parçalar */
     #pieces {
-        width: 340px;
-        height: 340px;
+        width: 330px;
+        height: 330px;
         background: rgba(255,255,255,0.9);
         border-radius: 20px;
         padding: 10px;
@@ -95,6 +99,62 @@
         font-size: 1em;
         cursor: pointer;
     }
+
+    /* 📱 Mobil uyumlu düzen */
+    @media (max-width: 768px) {
+        body {
+            height: auto;
+            padding: 20px 0;
+        }
+
+        #game {
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        #pieces, #board {
+            width: 280px;
+            height: 280px;
+            padding: 8px;
+        }
+
+        .piece, .slot {
+            width: 45px;
+            height: 45px;
+        }
+
+        #board {
+            grid-template-columns: repeat(6, 45px);
+            grid-template-rows: repeat(6, 45px);
+            gap: 4px;
+        }
+
+        .piece {
+            background-size: 270px 270px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        #pieces, #board {
+            width: 240px;
+            height: 240px;
+        }
+
+        .piece, .slot {
+            width: 38px;
+            height: 38px;
+        }
+
+        #board {
+            grid-template-columns: repeat(6, 38px);
+            grid-template-rows: repeat(6, 38px);
+            gap: 3px;
+        }
+
+        .piece {
+            background-size: 230px 230px;
+        }
+    }
 </style>
 </head>
 
@@ -123,7 +183,7 @@ const rows = 6;
 const cols = 6;
 const totalPieces = rows * cols;
 
-const image = "images/Puzzle1.jpg";   // Kullanılacak fotoğraf
+const image = "images/Puzzle1.jpg";
 
 const piecesContainer = document.getElementById("pieces");
 const board = document.getElementById("board");
@@ -160,10 +220,7 @@ for (let i = 0; i < rows; i++) {
     }
 }
 
-/* Parçaları karıştır */
 pieces.sort(() => Math.random() - 0.5);
-
-/* Parçaları sol tarafa ekle */
 pieces.forEach(p => piecesContainer.appendChild(p));
 
 let draggedPiece = null;

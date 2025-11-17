@@ -6,6 +6,7 @@
 <title>Mesaj 3 💌</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
 body {
   font-family: 'Playfair Display', serif;
   background-color: #FF4D4D;
@@ -15,34 +16,43 @@ body {
   position:relative;
   min-height:50vh;
   overflow-x:hidden;
+  max-width: 100%;
 }
+
 h1 {
   font-size:2em;
   margin-bottom:30px;
   color:#E8C07D;
   animation:fadeIn 1s ease-in;
 }
+
 .message-text {
   white-space: pre-line;
   background-color: rgba(255,245,245,0.9);
   display:inline-block;
-  padding:150px 150px;
+  padding:150px 100px;
   border-radius:15px;
   font-size:1em;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
   position:relative;
   animation:fadeIn 2s ease-in;
+  max-width: 95%;
 }
+
+/* Fotoğraflar */
 .photo {
   position:absolute;
   border-radius:15px;
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
   transition: transform 0.3s;
 }
+
 .photo:hover {
   transform:scale(1.05);
 }
-button {
+
+/* Buton ve linkler */
+button, a {
   margin-top:20px;
   background-color:#F5C2C2;
   color:#3B0A0A;
@@ -53,20 +63,32 @@ button {
   font-weight:bold;
   font-size:1em;
   transition:background 0.3s;
-  position:relative;
-  z-index:10;
+  text-decoration:none;
 }
-button:hover {
+
+button:hover, a:hover {
   background-color:#E8C07D;
 }
+
+/* Kalp animasyonları */
 .floating-heart {
   position:absolute;
   font-size:24px;
   animation: floatHeart 6s infinite;
   opacity:0.8;
 }
-@keyframes fadeIn {from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);}}
-@keyframes floatHeart {0% {transform:translateY(0px) rotate(0deg); opacity:0.7;} 50% {transform:translateY(-150px) rotate(15deg); opacity:1;} 100% {transform:translateY(0px) rotate(-10deg); opacity:0.7;}}
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+@keyframes floatHeart {
+  0% {transform:translateY(0px) rotate(0deg); opacity:0.7;}
+  50% {transform:translateY(-150px) rotate(15deg); opacity:1;}
+  100% {transform:translateY(0px) rotate(-10deg); opacity:0.7;}
+}
+
 .spark {
   position:absolute;
   width:8px;
@@ -76,12 +98,60 @@ button:hover {
   opacity:0.8;
   animation:sparkle 1.5s linear infinite;
 }
-@keyframes sparkle {0% {transform:translateY(0) scale(1); opacity:0.7;} 50% {transform:translateY(-30px) scale(1); opacity:1;} 100% {transform:translateY(0) scale(0.5); opacity:0;}}
+
+@keyframes sparkle {
+  0% {transform:translateY(0) scale(1); opacity:0.7;}
+  50% {transform:translateY(-30px) scale(1); opacity:1;}
+  100% {transform:translateY(0) scale(0.5); opacity:0;}
+}
+
+/* 📱 MOBİL UYUM AYARLARI */
+@media (max-width: 600px) {
+
+  h1 {
+    font-size: 1.6em;
+  }
+
+  .message-text {
+    padding: 80px 20px;
+    font-size: 1em;
+  }
+
+  .photo {
+    width: 120px !important;
+    height: auto;
+  }
+
+  /* Mobil fotoğraf pozisyon düzeltmeleri */
+  .photo:nth-of-type(1) {
+    top: 140px !important;
+    left: 20px !important;
+  }
+
+  .photo:nth-of-type(2) {
+    top: 140px !important;
+    right: 20px !important;
+  }
+
+  .photo:nth-of-type(3) {
+    top: 360px !important;
+    left: 30px !important;
+  }
+
+  /* Butonlar */
+  a {
+    width: 75%;
+    display: inline-block;
+    margin: 10px auto;
+  }
+}
+
 </style>
 </head>
 <body>
 
 <h1>Güzelliğin hayatıma güzellik katıyor kraliçem 😍</h1>
+
 <div class="message-text">
 💖💖💖
 İlk defa seni görünce rüya görüyorum sandım
@@ -104,8 +174,8 @@ Güneş bile senin güzelliğinden untanıp doğmaya çekiniyordur sevgilim 💘
 
 <!-- Butonlar -->
 <div style="text-align: center; margin-top: 20px;">
-  <a href="mesaj2.html" style="margin-right: 10px; padding: 10px 20px; background-color: #555; color: white; text-decoration: none; border-radius: 10px;">⬅ Geri</a>
-  <a href="mesaj4.html" style="padding: 10px 20px; background-color: #ff4081; color: white; text-decoration: none; border-radius: 10px;">İleri ➡</a>
+  <a href="mesaj2.html" style="background-color: #555;">⬅ Geri</a>
+  <a href="mesaj4.html" style="background-color: #ff4081;">İleri ➡</a>
 </div>
 
 <script>
@@ -121,8 +191,7 @@ function createSparks() {
   }
 }
 setInterval(createSparks,1000);
-
-
 </script>
+
 </body>
 </html>

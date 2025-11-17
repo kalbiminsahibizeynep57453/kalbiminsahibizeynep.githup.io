@@ -14,16 +14,19 @@
         color: white;
         overflow: hidden;
         text-align: center;
+        max-width: 100%;
     }
 
-    /* Aşağıdan yukarı kayan yazı (enter destekli) */
+    /* Aşağıdan yukarı kayan yazı */
     #scrollText {
         position: absolute;
-        bottom: -180vh; /* tamamen görünmez, en aşağıdan başlar */
+        bottom: -180vh;
         width: 100%;
         font-size: 1.6em;
         line-height: 1.8em;
-        white-space: pre-line; /* ENTER ile alt satır çalışır */
+        white-space: pre-line;
+        padding: 0 25px;
+        box-sizing: border-box;
         animation: scrollUp 75s linear forwards;
     }
 
@@ -41,7 +44,9 @@
         font-size: 2em;
         opacity: 0;
         animation: finalAppear 3s forwards;
-        animation-delay: 70s; 
+        animation-delay: 70s;
+        padding: 0 20px;
+        box-sizing: border-box;
     }
 
     @keyframes finalAppear {
@@ -75,11 +80,31 @@
         transition: 0.3s;
         font-weight: bold;
         border: 2px solid #ffffff;
+        display: inline-block;
     }
 
     .btn:hover {
         background: #f2f2f2;
         transform: scale(1.08);
+    }
+
+    /* 📱 MOBİL UYUM */
+    @media (max-width: 600px) {
+        #scrollText {
+            font-size: 1.2em;
+            line-height: 1.6em;
+            padding: 0 15px;
+            bottom: -200vh; /* daha uzun çünkü ekran daha dar */
+        }
+
+        #finalMessage {
+            font-size: 1.5em;
+        }
+
+        .btn {
+            width: 75%;
+            font-size: 1em;
+        }
     }
 </style>
 </head>
