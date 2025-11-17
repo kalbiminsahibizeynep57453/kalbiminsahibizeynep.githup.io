@@ -13,12 +13,10 @@ body {
   color: #3B0A0A;
   text-align: center;
   padding:50px 20px;
-  position:relative;
-  min-height:50vh;
   overflow-x:hidden;
-  max-width: 100%;
 }
 
+/* BAŞLIK */
 h1 {
   font-size:2em;
   margin-bottom:30px;
@@ -26,33 +24,39 @@ h1 {
   animation:fadeIn 1s ease-in;
 }
 
+/* MESAJ KUTUSU */
 .message-text {
   white-space: pre-line;
   background-color: rgba(255,245,245,0.9);
   display:inline-block;
-  padding:150px 100px;
+  padding:40px 20px;
   border-radius:15px;
-  font-size:1em;
+  font-size:1.1em;
+  max-width:95%;
   box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  position:relative;
-  animation:fadeIn 2s ease-in;
-  max-width: 95%;
 }
 
-/* Fotoğraflar */
+/* FOTOĞRAFLAR → 1. KODUN YAN YANA TASARIMI */
+.photo-row {
+  margin: 30px auto 10px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
 .photo {
-  position:absolute;
-  border-radius:15px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  width: 70px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: transform 0.3s;
 }
 
 .photo:hover {
-  transform:scale(1.05);
+  transform: scale(1.05);
 }
 
-/* Buton ve linkler */
-button, a {
+/* BUTONLAR */
+a {
   margin-top:20px;
   background-color:#F5C2C2;
   color:#3B0A0A;
@@ -66,11 +70,11 @@ button, a {
   text-decoration:none;
 }
 
-button:hover, a:hover {
+a:hover {
   background-color:#E8C07D;
 }
 
-/* Kalp animasyonları */
+/* KALPLER */
 .floating-heart {
   position:absolute;
   font-size:24px;
@@ -78,6 +82,7 @@ button:hover, a:hover {
   opacity:0.8;
 }
 
+/* ANİMASYONLAR */
 @keyframes fadeIn {
   from {opacity:0; transform:translateY(20px);}
   to {opacity:1; transform:translateY(0);}
@@ -89,65 +94,31 @@ button:hover, a:hover {
   100% {transform:translateY(0px) rotate(-10deg); opacity:0.7;}
 }
 
-.spark {
-  position:absolute;
-  width:8px;
-  height:8px;
-  background:#E8C07D;
-  border-radius:50%;
-  opacity:0.8;
-  animation:sparkle 1.5s linear infinite;
-}
-
-@keyframes sparkle {
-  0% {transform:translateY(0) scale(1); opacity:0.7;}
-  50% {transform:translateY(-30px) scale(1); opacity:1;}
-  100% {transform:translateY(0) scale(0.5); opacity:0;}
-}
-
-/* 📱 MOBİL UYUM AYARLARI */
+/* MOBİL UYUMLU */
 @media (max-width: 600px) {
 
-  h1 {
-    font-size: 1.6em;
-  }
+  h1 { font-size: 1.6em; }
 
   .message-text {
-    padding: 80px 20px;
+    padding: 25px 15px;
     font-size: 1em;
   }
 
+  .photo-row { gap: 10px; }
+
   .photo {
-    width: 120px !important;
-    height: auto;
+    width: 90px;
   }
 
-  /* Mobil fotoğraf pozisyon düzeltmeleri */
-  .photo:nth-of-type(1) {
-    top: 140px !important;
-    left: 20px !important;
-  }
-
-  .photo:nth-of-type(2) {
-    top: 140px !important;
-    right: 20px !important;
-  }
-
-  .photo:nth-of-type(3) {
-    top: 360px !important;
-    left: 30px !important;
-  }
-
-  /* Butonlar */
   a {
     width: 75%;
     display: inline-block;
     margin: 10px auto;
   }
 }
-
 </style>
 </head>
+
 <body>
 
 <h1>Güzelliğin hayatıma güzellik katıyor kraliçem 😍</h1>
@@ -162,36 +133,23 @@ daha ilk bakışta bile yüzünün her ayrıntısına ayrı ayrı aşık olmaya 
 Güneş bile senin güzelliğinden untanıp doğmaya çekiniyordur sevgilim 💘
 </div>
 
-<!-- Fotoğraflar -->
-<img src="images/mesaj3-1.jpg" class="photo" style="top:150px; left:200px; width:150px; transform: rotate(25deg);">
-<img src="images/mesaj3-2.jpg" class="photo" style="top:150px; right:110px; width:130px; transform: rotate(0deg);">
-<img src="images/mesaj3-3.jpg" class="photo" style="top:400px; left:150px; width:150px; transform: rotate(-15deg);">
+<!-- YAN YANA 3 FOTOĞRAF -->
+<div class="photo-row">
+  <img src="images/mesaj3-1.jpg" class="photo">
+  <img src="images/mesaj3-2.jpg" class="photo">
+  <img src="images/mesaj3-3.jpg" class="photo">
+</div>
 
-<!-- Kalpler -->
+<!-- KALPLER -->
 <div class="floating-heart" style="left:10%; top:80%;">💖</div>
 <div class="floating-heart" style="left:50%; top:90%;">💌</div>
 <div class="floating-heart" style="left:80%; top:75%;">💖</div>
 
-<!-- Butonlar -->
+<!-- BUTONLAR -->
 <div style="text-align: center; margin-top: 20px;">
   <a href="mesaj2.html" style="background-color: #555;">⬅ Geri</a>
   <a href="mesaj4.html" style="background-color: #ff4081;">İleri ➡</a>
 </div>
-
-<script>
-function createSparks() {
-  const count=10;
-  for(let i=0;i<count;i++){
-    const spark=document.createElement('div');
-    spark.className='spark';
-    spark.style.left=Math.random()*window.innerWidth+'px';
-    spark.style.top=Math.random()*window.innerHeight+'px';
-    document.body.appendChild(spark);
-    setTimeout(()=>{spark.remove();},1500);
-  }
-}
-setInterval(createSparks,1000);
-</script>
 
 </body>
 </html>
