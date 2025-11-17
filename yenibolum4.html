@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Aşk Puzzle 💖</title>
 
 <style>
@@ -21,8 +20,7 @@
 
     #game {
         display: flex;
-        flex-direction: row;
-        gap: 20px;
+        gap: 25px;
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
@@ -41,7 +39,6 @@
         flex-wrap: wrap;
         overflow: auto;
         justify-content: center;
-        touch-action: none;
     }
 
     .piece {
@@ -51,8 +48,7 @@
         background-size: 330px 330px;
         border-radius: 5px;
         cursor: grab;
-        position: absolute;
-        touch-action: none;
+        touch-action: none; /* dokunurken sayfanın kaymasını engelle */
     }
 
     /* Puzzle tahtası */
@@ -67,7 +63,6 @@
         gap: 5px;
         padding: 10px;
         box-shadow: 0 0 25px rgba(0,0,0,0.4);
-        position: relative;
     }
 
     .slot {
@@ -75,9 +70,9 @@
         height: 55px;
         background: #ffe0f0;
         border-radius: 5px;
-        position: relative;
     }
 
+    /* Bitince çıkan ekran */
     #winBox {
         display: none;
         position: fixed;
@@ -106,165 +101,279 @@
         cursor: pointer;
     }
 
+    /* 📱 Mobil uyumlu düzen */
+    @media (max-width: 768px) {
+        body {
+            height: auto;
+            padding: 20px 0;
+        }
+
+        #game {
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        #pieces, #board {
+            width: 280px;
+            height: 280px;
+            padding: 8px;
+        }
+
+        .piece, .slot {
+            width: 45px;
+            height: 45px;
+        }
+
+        #board {
+            grid-template-columns: repeat(6, 45px);
+            grid-template-rows: repeat(6, 45px);
+            gap: 4px;
+        }
+
+        .piece {
+            background-size: 270px 270px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        #pieces, #board {
+            width: 240px;
+            height: 240px;
+        }
+
+        .piece, .slot {
+            width: 38px;
+            height: 38px;
+        }
+
+        #board {
+            grid-template-columns: repeat(6, 38px);
+            grid-template-rows: repeat(6, 38px);
+            gap: 3px;
+        }
+
+        .piece {
+            background-size: 230px 230px;
+        }
+    }
 </style>
 </head>
-<body>
 
+<body>
 <div id="game">
     <div id="pieces"></div>
     <div id="board"></div>
 </div>
 
 <div id="winBox">
-    💖 Tebrikler Aşkım! 💖<br><br>
-    Puzzle'ı başarıyla tamamladın!<br><br>
-
+    💖 Tebrikler Aşkım! 💖
+    <br><br>
+    Puzzle'ı başarıyla tamamladın!
+    <br><br>
     <button onclick="location.href='yenibolum3.html'">⬅ Geri</button>
     <button onclick="location.href='finalson.html'">İleri ➜</button>
 </div>
 
 <script>
-/* =============================
-      AYARLAR
-============================= */
+/* ============================
+      PUZZLE AYARLARI
+============================ */
 
 const rows = 6;
 const cols = 6;
-const total = rows * cols;
-const img = "images/Puzzle1.jpg";
+const totalPieces = rows * cols;
 
-const piecesArea = document.getElementById("pieces");
+const image = "images/Puzzle1.jpg";
+
+const piecesContainer = document.getElementById("pieces");
 const board = document.getElementById("board");
 
-let pieces = [];
-let dragData = null;
-
-/* === SLOT OLUŞTUR === */
-for (let i = 0; i < total; i++) {
-    let s = document.createElement("div");
-    s.classList.add("slot");
-    s.dataset.index = i;
-    board.appendChild(s);
+/* Slotları oluştur */
+for (let i = 0; i < totalPieces; i++) {
+    const slot = document.createElement("div");
+    slot.classList.add("slot");
+    slot.dataset.index = i;
+    slot.addEventListener("drop", dropPiece);
+    slot.addEventListener("dragover", (e) => e.preventDefault());
+    board.appendChild(slot);
 }
 
-/* === PARÇA OLUŞTUR === */
+/* Parçaları oluştur */
+let pieces = [];
+
 for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
 
-        let p = document.createElement("div");
-        p.classList.add("piece");
+        let piece = document.createElement("div");
+        piece.classList.add("piece");
+        piece.draggable = true;
 
         let index = i * cols + j;
-        p.dataset.index = index;
+        piece.dataset.index = index;
 
-        p.style.backgroundImage = `url(${img})`;
-        p.style.backgroundPosition = `-${j * 55}px -${i * 55}px`;
+        piece.style.backgroundImage = `url(${image})`;
+        piece.style.backgroundPosition = `-${j * 55}px -${i * 55}px`;
 
-        pieces.push(p);
+        piece.addEventListener("dragstart", dragPiece);
+
+        pieces.push(piece);
     }
 }
 
 pieces.sort(() => Math.random() - 0.5);
-pieces.forEach(p => {
-    piecesArea.appendChild(p);
-    p.style.position = "relative";
-});
+pieces.forEach(p => piecesContainer.appendChild(p));
 
-/* =============================
-   DRAG - TOUCH FONKSİYONLARI
-============================= */
+let draggedPiece = null;
 
-pieces.forEach(piece => {
-
-    piece.addEventListener("pointerdown", startDrag);
-    piece.addEventListener("pointermove", dragMove);
-    piece.addEventListener("pointerup", endDrag);
-    piece.addEventListener("pointercancel", endDrag);
-});
-
-function startDrag(e) {
-    dragData = {
-        elem: e.target,
-        startX: e.clientX,
-        startY: e.clientY,
-        origX: e.target.offsetLeft,
-        origY: e.target.offsetTop,
-    };
-
-    e.target.style.zIndex = "999";
+function dragPiece(e) {
+    draggedPiece = e.target;
 }
 
-function dragMove(e) {
-    if (!dragData) return;
+function dropPiece(e) {
+    if (!draggedPiece) return;
 
-    let dx = e.clientX - dragData.startX;
-    let dy = e.clientY - dragData.startY;
+    const targetIndex = e.target.dataset.index;
+    const pieceIndex = draggedPiece.dataset.index;
 
-    dragData.elem.style.transform =
-        `translate(${dx}px, ${dy}px)`;
+    if (targetIndex === pieceIndex) {
+        e.target.appendChild(draggedPiece);
+        draggedPiece.style.cursor = "default";
+        draggedPiece.draggable = false;
+        checkWin();
+    }
 }
 
-function endDrag(e) {
-    if (!dragData) return;
+/* Puzzle tamamlandı mı? */
+function checkWin() {
+    const slots = document.querySelectorAll(".slot");
+    let correct = 0;
 
-    let piece = dragData.elem;
-    let dropSuccess = false;
+    slots.forEach(slot => {
+        if (slot.children.length > 0) {
+            let piece = slot.children[0];
+            if (piece.dataset.index === slot.dataset.index) correct++;
+        }
+    });
 
-    piece.style.zIndex = "1";
+    if (correct === totalPieces) {
+        document.getElementById("winBox").style.display = "block";
+    }
+}
 
-    /* Slotlara bak */
-    document.querySelectorAll(".slot").forEach(slot => {
+/* ============================
+   DOKUNMATİK (MOBİL) DESTEK
+============================ */
 
-        let rect = slot.getBoundingClientRect();
-        let x = e.clientX;
-        let y = e.clientY;
+const isTouchDevice =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    navigator.msMaxTouchPoints > 0;
 
-        if (x > rect.left && x < rect.right &&
-            y > rect.top && y < rect.bottom) {
+let touchGhost = null;      // ekranda gezen küçük kopya
+let activeTouchId = null;   // hangi parmak
 
-            /* DOĞRU SLOT MU? */
-            if (slot.dataset.index === piece.dataset.index) {
+if (isTouchDevice) {
+    const allPieces = document.querySelectorAll(".piece");
+    allPieces.forEach(piece => {
+        piece.draggable = false; // HTML5 drag yok, kendi sistemimizi kullanacağız
+        piece.addEventListener("touchstart", handleTouchStart, { passive: false });
+    });
+}
 
-                piece.style.position = "absolute";
-                piece.style.left = rect.left - board.getBoundingClientRect().left + "px";
-                piece.style.top = rect.top - board.getBoundingClientRect().top + "px";
-                piece.style.transform = "none";
+function handleTouchStart(e) {
+    e.preventDefault();
 
-                slot.appendChild(piece);
-                piece.style.cursor = "default";
+    const touch = e.touches[0];
+    draggedPiece = e.target;
+    activeTouchId = touch.identifier;
 
-                dropSuccess = true;
+    const rect = draggedPiece.getBoundingClientRect();
 
+    // Ekranda gezen hayalet parça (görsel)
+    touchGhost = draggedPiece.cloneNode(true);
+    touchGhost.style.position = "fixed";
+    touchGhost.style.left = rect.left + "px";
+    touchGhost.style.top = rect.top + "px";
+    touchGhost.style.width = rect.width + "px";
+    touchGhost.style.height = rect.height + "px";
+    touchGhost.style.margin = "0";
+    touchGhost.style.zIndex = "9999";
+    touchGhost.style.opacity = "0.9";
+    touchGhost.style.pointerEvents = "none";
+
+    document.body.appendChild(touchGhost);
+
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.addEventListener("touchend", handleTouchEnd);
+    document.addEventListener("touchcancel", handleTouchEnd);
+}
+
+function handleTouchMove(e) {
+    e.preventDefault();
+    if (!touchGhost) return;
+
+    let touch = null;
+    for (let t of e.touches) {
+        if (t.identifier === activeTouchId || activeTouchId === null) {
+            touch = t;
+            break;
+        }
+    }
+    if (!touch) return;
+
+    const w = touchGhost.offsetWidth;
+    const h = touchGhost.offsetHeight;
+
+    touchGhost.style.left = (touch.clientX - w / 2) + "px";
+    touchGhost.style.top = (touch.clientY - h / 2) + "px";
+}
+
+function handleTouchEnd(e) {
+    if (!draggedPiece) {
+        cleanupTouch();
+        return;
+    }
+
+    const touch = e.changedTouches[0];
+    const x = touch.clientX;
+    const y = touch.clientY;
+
+    let dropped = false;
+
+    const slots = document.querySelectorAll(".slot");
+    slots.forEach(slot => {
+        const rect = slot.getBoundingClientRect();
+
+        if (x > rect.left && x < rect.right && y > rect.top && y < rect.bottom) {
+            const targetIndex = slot.dataset.index;
+            const pieceIndex = draggedPiece.dataset.index;
+
+            if (targetIndex === pieceIndex) {
+                slot.appendChild(draggedPiece);
+                draggedPiece.style.cursor = "default";
+                draggedPiece.draggable = false;
+                dropped = true;
                 checkWin();
             }
         }
     });
 
-    if (!dropSuccess) {
-        piece.style.transform = "none";
-    }
-
-    dragData = null;
+    // yanlışsa yerinde kalsın (zaten hareket ettirmedik)
+    cleanupTouch();
 }
 
-/* == KAZANMA KONTROLÜ == */
-function checkWin() {
-    let correct = 0;
-
-    document.querySelectorAll(".slot").forEach(slot => {
-        if (slot.children.length > 0) {
-            let p = slot.children[0];
-            if (p.dataset.index === slot.dataset.index) {
-                correct++;
-            }
-        }
-    });
-
-    if (correct === total) {
-        document.getElementById("winBox").style.display = "block";
+function cleanupTouch() {
+    if (touchGhost && touchGhost.parentNode) {
+        touchGhost.parentNode.removeChild(touchGhost);
     }
+    touchGhost = null;
+    draggedPiece = null;
+    activeTouchId = null;
+
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+    document.removeEventListener("touchcancel", handleTouchEnd);
 }
 </script>
-
 </body>
 </html>
