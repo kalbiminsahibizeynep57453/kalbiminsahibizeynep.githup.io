@@ -13,12 +13,10 @@ body {
   color:#3B0A0A;
   text-align: center;
   padding:50px 20px;
-  position:relative;
-  min-height:50vh;
   overflow-x:hidden;
-  max-width:100%;
 }
 
+/* BAŞLIK */
 h1 {
   font-size:2em;
   margin-bottom:30px;
@@ -26,49 +24,56 @@ h1 {
   animation:fadeIn 1s ease-in;
 }
 
+/* MESAJ KUTUSU */
 .message-text {
   white-space: pre-line;
   background-color: rgba(255,245,245,0.9);
   display:inline-block;
-  padding:150px 100px;
+  padding:40px 20px;
   border-radius:15px;
-  font-size:1em;
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-  position:relative;
-  animation:fadeIn 2s ease-in;
+  font-size:1.1em;
   max-width:95%;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Fotoğraflar */
+/* FOTOĞRAFLAR — GRID */
+.photo-grid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  justify-items: center;
+}
+
 .photo {
-  position:absolute;
-  border-radius:15px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
-}
-.photo:hover {
-  transform:scale(1.05);
+  width: 130px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform .3s;
 }
 
-/* Buton ve link */
-button, a {
-  margin-top:20px;
+.photo:hover {
+  transform: scale(1.05);
+}
+
+/* BUTONLAR */
+a {
+  margin-top: 20px;
   background-color:#F5C2C2;
   color:#3B0A0A;
-  border:none;
   padding:12px 25px;
   border-radius:15px;
-  cursor:pointer;
-  font-weight:bold;
-  font-size:1em;
-  transition:background 0.3s;
+  display:inline-block;
   text-decoration:none;
+  font-weight:bold;
+  transition:.3s;
 }
-button:hover, a:hover {
+
+a:hover {
   background-color:#E8C07D;
 }
 
-/* Kalpler */
+/* KALP ANİMASYONLARI */
 .floating-heart {
   position:absolute;
   font-size:24px;
@@ -76,7 +81,6 @@ button:hover, a:hover {
   opacity:0.8;
 }
 
-/* Animasyonlar */
 @keyframes fadeIn {
   from {opacity:0; transform:translateY(20px);}
   to {opacity:1; transform:translateY(0);}
@@ -88,77 +92,18 @@ button:hover, a:hover {
   100% {transform:translateY(0px) rotate(-10deg); opacity:0.7;}
 }
 
-.spark {
-  position:absolute;
-  width:8px;
-  height:8px;
-  background:#E8C07D;
-  border-radius:50%;
-  opacity:0.8;
-  animation:sparkle 1.5s linear infinite;
+/* MOBİL UYUMLU */
+@media (max-width:600px){
+  h1 { font-size:1.6em; }
+  .message-text { font-size:1em; padding:25px 15px; }
+  .photo { width: 140px; }
+  a { width:75%; }
 }
-
-@keyframes sparkle {
-  0% {transform:translateY(0) scale(1); opacity:0.7;}
-  50% {transform:translateY(-30px) scale(1); opacity:1;}
-  100% {transform:translateY(0) scale(0.5); opacity:0;}
-}
-
-/* 📱 MOBİL UYUM */
-@media (max-width: 600px) {
-
-  h1 {
-    font-size:1.6em;
-  }
-
-  .message-text {
-    padding:80px 20px;
-    font-size:1em;
-  }
-
-  /* Fotoğraflar mobil için */
-  .photo {
-    width:120px !important;
-    height:auto;
-  }
-
-  .photo:nth-of-type(1) {
-    top:160px !important;
-    left:20px !important;
-    width:110px !important;
-  }
-
-  .photo:nth-of-type(2) {
-    top:160px !important;
-    right:20px !important;
-    width:110px !important;
-  }
-
-  .photo:nth-of-type(3) {
-    top:320px !important;
-    left:25px !important;
-    width:110px !important;
-  }
-
-  .photo:nth-of-type(4) {
-    top:340px !important;
-    right:20px !important;
-    width:140px !important;
-  }
-
-  a {
-    display:inline-block;
-    width:75%;
-    margin:10px auto;
-    font-size:1em;
-  }
-}
-
 </style>
 </head>
 <body>
 
-<h1>İlerde seninle çok mutlu olacaz hayatımın alamı 💖</h1>
+<h1>İlerde seninle çok mutlu olacaz hayatımın anlamı 💖</h1>
 
 <div class="message-text">
 💘💘💘  
@@ -169,37 +114,24 @@ yaşlanıp gidecez ama hiç bir zaman seni bukadar çok sevmekten vazgeçmeyecem
 sonsuza dek kraliçem 🥺
 </div>
 
-<!-- Fotoğraflar -->
-<img src="images/mesaj5-1.jpg" class="photo" style="top:180px; left:150px; width:100px; transform: rotate(25deg);">
-<img src="images/mesaj5-2.jpg" class="photo" style="top:180px; right:150px; width:100px; transform: rotate(-25deg);">
-<img src="images/mesaj5-3.jpg" class="photo" style="top:380px; left:150px; width:100px; transform: rotate(25deg);">
-<img src="images/mesaj5-4.jpg" class="photo" style="top:400px; right:150px; width:150px; transform: rotate(-25deg);">
+<!-- FOTOĞRAFLAR — 2 ÜSTTE, 2 ALTA -->
+<div class="photo-grid">
+  <img src="images/mesaj5-1.jpg" class="photo">
+  <img src="images/mesaj5-2.jpg" class="photo">
+  <img src="images/mesaj5-3.jpg" class="photo">
+  <img src="images/mesaj5-4.jpg" class="photo">
+</div>
 
 <!-- Kalpler -->
 <div class="floating-heart" style="left:10%; top:80%;">💖</div>
 <div class="floating-heart" style="left:50%; top:90%;">💌</div>
 <div class="floating-heart" style="left:80%; top:75%;">💖</div>
 
-<!-- Butonlar -->
-<div style="text-align: center; margin-top: 20px;">
-  <a href="mesaj4.html" style="background-color:#555;">⬅ Geri</a>
-  <a href="final.html" style="background-color:#ff4081;">İleri ➡</a>
+<!-- BUTONLAR -->
+<div style="margin-top:20px;">
+  <a href="mesaj4.html" style="background:#555; color:white;">⬅ Geri</a>
+  <a href="final.html" style="background:#ff4081; color:white;">İleri ➡</a>
 </div>
-
-<script>
-function createSparks() {
-  const count=10;
-  for(let i=0;i<count;i++){
-    const spark=document.createElement('div');
-    spark.className='spark';
-    spark.style.left=Math.random()*window.innerWidth+'px';
-    spark.style.top=Math.random()*window.innerHeight+'px';
-    document.body.appendChild(spark);
-    setTimeout(()=>{spark.remove();},1500);
-  }
-}
-setInterval(createSparks,1000);
-</script>
 
 </body>
 </html>
