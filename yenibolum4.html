@@ -27,7 +27,6 @@
         max-width: 95%;
     }
 
-    /* Sol taraftaki parçalar */
     #pieces {
         width: 330px;
         height: 330px;
@@ -50,7 +49,6 @@
         cursor: grab;
     }
 
-    /* Puzzle tahtası */
     #board {
         width: 330px;
         height: 330px;
@@ -71,7 +69,6 @@
         border-radius: 5px;
     }
 
-    /* Bitince çıkan ekran */
     #winBox {
         display: none;
         position: fixed;
@@ -98,62 +95,6 @@
         border-radius: 10px;
         font-size: 1em;
         cursor: pointer;
-    }
-
-    /* 📱 Mobil uyumlu düzen */
-    @media (max-width: 768px) {
-        body {
-            height: auto;
-            padding: 20px 0;
-        }
-
-        #game {
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        #pieces, #board {
-            width: 280px;
-            height: 280px;
-            padding: 8px;
-        }
-
-        .piece, .slot {
-            width: 45px;
-            height: 45px;
-        }
-
-        #board {
-            grid-template-columns: repeat(6, 45px);
-            grid-template-rows: repeat(6, 45px);
-            gap: 4px;
-        }
-
-        .piece {
-            background-size: 270px 270px;
-        }
-    }
-
-    @media (max-width: 500px) {
-        #pieces, #board {
-            width: 240px;
-            height: 240px;
-        }
-
-        .piece, .slot {
-            width: 38px;
-            height: 38px;
-        }
-
-        #board {
-            grid-template-columns: repeat(6, 38px);
-            grid-template-rows: repeat(6, 38px);
-            gap: 3px;
-        }
-
-        .piece {
-            background-size: 230px 230px;
-        }
     }
 </style>
 </head>
@@ -216,6 +157,11 @@ for (let i = 0; i < rows; i++) {
 
         piece.addEventListener("dragstart", dragPiece);
 
+        /* 📱 Dokunmatik sürükleme ekledim */
+        piece.addEventListener("touchstart", touchStart, { passive: false });
+        piece.addEventListener("touchmove", touchMove, { passive: false });
+        piece.addEventListener("touchend", touchEnd);
+
         pieces.push(piece);
     }
 }
@@ -224,11 +170,80 @@ pieces.sort(() => Math.random() - 0.5);
 pieces.forEach(p => piecesContainer.appendChild(p));
 
 let draggedPiece = null;
+let originalParent = null;
+let offsetX = 0;
+let offsetY = 0;
 
+/* ============================
+        MOUSE SÜRÜKLEME
+============================ */
 function dragPiece(e) {
     draggedPiece = e.target;
 }
 
+/* ============================
+    DOKUNMATİK SÜRÜKLEME
+============================ */
+
+function touchStart(e) {
+    e.preventDefault();
+
+    draggedPiece = e.target;
+    originalParent = draggedPiece.parentElement;
+
+    const rect = draggedPiece.getBoundingClientRect();
+    const touch = e.touches[0];
+
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
+
+    draggedPiece.style.position = "fixed";
+    draggedPiece.style.zIndex = "9999";
+}
+
+function touchMove(e) {
+    if (!draggedPiece) return;
+    e.preventDefault();
+
+    const touch = e.touches[0];
+    draggedPiece.style.left = (touch.clientX - offsetX) + "px";
+    draggedPiece.style.top = (touch.clientY - offsetY) + "px";
+}
+
+function touchEnd(e) {
+    if (!draggedPiece) return;
+
+    const touch = e.changedTouches[0];
+    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+
+    if (element && element.classList.contains("slot")) {
+        const targetIndex = element.dataset.index;
+        const pieceIndex = draggedPiece.dataset.index;
+
+        if (targetIndex === pieceIndex) {
+            element.appendChild(draggedPiece);
+            resetPiece(draggedPiece);
+            draggedPiece = null;
+            checkWin();
+            return;
+        }
+    }
+
+    originalParent.appendChild(draggedPiece);
+    resetPiece(draggedPiece);
+    draggedPiece = null;
+}
+
+function resetPiece(piece) {
+    piece.style.position = "relative";
+    piece.style.left = "0px";
+    piece.style.top = "0px";
+    piece.style.zIndex = "1";
+}
+
+/* ============================
+        MOUSE DROP
+============================ */
 function dropPiece(e) {
     if (!draggedPiece) return;
 
