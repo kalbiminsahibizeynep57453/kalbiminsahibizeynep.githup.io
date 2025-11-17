@@ -13,37 +13,41 @@ body {
   color: #3B0A0A;
   text-align: center;
   padding: 50px 20px;
-  position: relative;
-  min-height: 50vh;
   overflow-x: hidden;
-  max-width: 100%;
 }
 
 h1 {
   font-size: 2em;
   margin-bottom: 30px;
   color: #E8C07D;
-  animation: fadeIn 1s ease-in;
 }
 
 .message-text {
   white-space: pre-line;
   background-color: rgba(255,245,245,0.9);
   display: inline-block;
-  padding: 150px 10px;
+  padding: 40px 20px;
   border-radius: 15px;
   font-size: 1.1em;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  position: relative;
-  animation: fadeIn 2s ease-in;
   max-width: 95%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* FOTOĞRAF ALANI */
+.photo-wrapper {
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: center;
 }
 
 /* Fotoğraflar */
 .photo {
-  position: absolute;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  width: 220px;
+  max-width: 70%;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: transform 0.3s;
 }
 
@@ -51,7 +55,6 @@ h1 {
   transform: scale(1.05);
 }
 
-/* Butonlar */
 button, a {
   margin-top: 20px;
   background-color: #F5C2C2;
@@ -62,82 +65,18 @@ button, a {
   cursor: pointer;
   font-weight: bold;
   font-size: 1em;
-  transition: background 0.3s;
-  position: relative;
-  z-index: 10;
 }
 
-button:hover, a:hover {
-  background-color: #E8C07D;
-}
-
-/* Kalpler */
-.floating-heart {
-  position: absolute;
-  font-size: 24px;
-  animation: floatHeart 6s infinite;
-  opacity: 0.8;
-}
-
-/* Animasyonlar */
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(20px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
-@keyframes floatHeart {
-  0% {transform: translateY(0px) rotate(0deg); opacity: 0.7;}
-  50% {transform: translateY(-150px) rotate(15deg); opacity: 1;}
-  100% {transform: translateY(0px) rotate(-10deg); opacity: 0.7;}
-}
-
-.spark {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: #E8C07D;
-  border-radius: 50%;
-  opacity: 0.8;
-  animation: sparkle 1.5s linear infinite;
-}
-
-@keyframes sparkle {
-  0% {transform: translateY(0) scale(0.5); opacity: 0.7;}
-  50% {transform: translateY(-30px) scale(1); opacity: 1;}
-  100% {transform: translateY(0) scale(0.5); opacity: 0;}
-}
-
-/* 📱 Mobil uyumlu düzenleme */
+/* Mobil düzen */
 @media (max-width: 600px) {
+  h1 { font-size: 1.6em; }
+  .message-text { padding: 25px 15px; }
 
-  h1 {
-    font-size: 1.6em;
-  }
-
-  .message-text {
-    padding: 80px 15px;
-    font-size: 1em;
-  }
-
-  /* Fotoğrafların mobilde ekran dışına taşmaması için */
   .photo {
-    width: 100px !important;
-    height: auto;
-  }
-
-  /* Fotoğraf yerleşim düzeltmesi */
-  .photo:nth-child(2) { left: 20px !important; top: 130px !important; }
-  .photo:nth-child(3) { right: 20px !important; top: 140px !important; }
-  .photo:nth-child(4) { right: 20px !important; top: 300px !important; }
-
-  a {
-    display: inline-block;
-    width: 70%;
-    margin: 10px auto;
-    font-size: 1em;
+    width: 180px;
+    max-width: 85%;
   }
 }
-
 </style>
 </head>
 <body>
@@ -152,34 +91,15 @@ sen cevap verince ooo bide cevap veriyor ciğerim demiştim 😂
 Tabi o zamanlar dünyanın en muteşem kızı ile konuşacağımı bilmiyordum💖
 </div>
 
-<!-- Fotoğraflar -->
-<img src="images/mesaj1.jpg" class="photo" style="top:150px; right:230px; width:120px;">
-<img src="images/mesaj2.jpg" class="photo" style="top:146px; left:200px; width:150px;">
-<img src="images/mesaj3.jpg" class="photo" style="top:330px; right:230px; width:120px;">
-
-<!-- Kalpler -->
-<div class="floating-heart" style="left:10%; top:80%;">💖</div>
-<div class="floating-heart" style="left:50%; top:90%;">💌</div>
-<div class="floating-heart" style="left:80%; top:75%;">💖</div>
-
-<div style="text-align: center; margin-top: 20px;">
-  <a href="index.html" style="margin-right: 10px; padding: 10px 20px; background-color: #555; color: white; text-decoration: none; border-radius: 10px;">⬅ Geri</a>
-  <a href="mesaj2.html" style="padding: 10px 20px; background-color: #ff4081; color: white; text-decoration: none; border-radius: 10px;">İleri ➡</a>
+<!-- FOTOĞRAFLAR ARTIK SABİT DEĞİL → DOĞRU YERE OTURUYOR -->
+<div class="photo-wrapper">
+  <img src="images/mesaj1.jpg" class="photo">
+  <img src="images/mesaj2.jpg" class="photo">
+  <img src="images/mesaj3.jpg" class="photo">
 </div>
 
-<script>
-function createSparks() {
-  const count = 10;
-  for (let i = 0; i < count; i++) {
-    const spark = document.createElement('div');
-    spark.className = 'spark';
-    spark.style.left = Math.random() * window.innerWidth + 'px';
-    spark.style.top = Math.random() * window.innerHeight + 'px';
-    document.body.appendChild(spark);
-    setTimeout(() => { spark.remove(); }, 1500);
-  }
-}
-</script>
+<a href="index.html" style="background:#555; color:white; margin-right:10px;">⬅ Geri</a>
+<a href="mesaj2.html" style="background:#ff4081; color:white;">İleri ➡</a>
 
 </body>
 </html>
