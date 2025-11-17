@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aşk Labirenti 💘</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Playfair Display', serif;
+        background: radial-gradient(circle, #ffb3d9, #ff4da6, #cc0066);
+        overflow: hidden;
+        color: #4a0015;
+    }
+
+    .wrapper {
+        background: rgba(255, 245, 250, 0.96);
+        border-radius: 24px;
+        box-shadow: 0 0 28px rgba(0,0,0,0.35);
+        padding: 18px 22px 16px;
+        text-align: center;
+        position: relative;
+    }
+
+    h1 {
+        margin: 0 0 4px;
+        font-size: 1.9em;
+        color: #b30047;
+    }
+
+    .subtitle {
+        font-size: 0.95em;
+        margin-bottom: 10px;
+    }
+
+    .subtitle span {
+        color: #ff2e8a;
+    }
+
+    #maze-box {
+        margin: 6px auto 4px;
+        padding: 10px;
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.15);
+        position: relative;
+        display: inline-block;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    /* Oyuncu ve çıkış ikonları */
+    #player,
+    #exit-icon {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-size: cover;
+        z-index: 5;
+    }
+
+    #player {
+        background-image: url("https://cdn-icons-png.flaticon.com/512/833/833472.png"); /* kırmızı kalp */
+    }
+
+    #exit-icon {
+        background-image: url("https://cdn-icons-png.flaticon.com/512/2589/2589175.png"); /* hedef kalp */
+    }
+
+    /* Başlangıç / Çıkış etiketleri */
+    .cell-label {
+        position: absolute;
+        font-size: 0.7em;
+        color: #b30047;
+        transform: translateY(-18px);
+        pointer-events: none;
+        white-space: nowrap;
+    }
+
+    .info {
+        font-size: 0.85em;
+        margin-top: 4px;
+    }
+
+    .info span {
+        color: #ff2e8a;
+        font-weight: bold;
+    }
+
+    /* Kazanma overlay’i */
+    #win-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 20;
+    }
+
+    .win-box {
+        background: rgba(255, 245, 250, 0.98);
+        border-radius: 22px;
+        padding: 24px 26px 20px;
+        max-width: 380px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 0 26px rgba(0,0,0,0.5);
+        color: #6b0030;
+    }
+
+    .win-box h2 {
+        margin-top: 0;
+        font-size: 1.6em;
+        color: #b30047;
+    }
+
+    .win-box p {
+        font-size: 0.98em;
+        line-height: 1.6em;
+        white-space: pre-line;
+    }
+
+    .win-buttons {
+        margin-top: 14px;
+    }
+
+    .win-buttons a {
+        display: inline-block;
+        padding: 9px 22px;
+        margin: 4px 6px;
+        border-radius: 14px;
+        background: #ffffff;
+        color: #333333;
+        font-weight: bold;
+        font-size: 0.95em;
+        text-decoration: none;
+        box-shadow: 0 0 10px rgba(0,0,0,0.25);
+        transition: 0.2s;
+    }
+
+    .win-buttons a:hover {
+        transform: scale(1.05);
+        background: #f5f5f5;
+    }
+
+    @media (max-width: 768px) {
+        .wrapper {
+            transform: scale(0.9);
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+    <h1>Aşk Labirenti 💘</h1>
+    <div class="subtitle">
+       Kalbim aşağıda senin kalbine kavuşmayı bekliyor zeynebim. <span>❤️</span><br>
+        Kalbi <span>W A S D</span> tuşları ile hareket ettir, doğru yolu bulup kalbime ulaş.
+    </div>
+
+    <div id="maze-box">
+        <canvas id="maze-canvas"></canvas>
+        <div id="player"></div>
+        <div id="exit-icon"></div>
+        <div id="start-label" class="cell-label">💞</div>
+        <div id="exit-label" class="cell-label">💘</div>
+    </div>
+
+    <div class="info">
+        Seni çok seviyorum ay ışığım beni sensiz bırakma 
+    </div>
+</div>
+
+<!-- Kazanma ekranı -->
+<div id="win-overlay">
+    <div class="win-box">
+        <h2>Bravo Kalbimin Kahramanı! 💞</h2>
+        <p>
+Bu karışık labirentte bile
+kalplerimizi birleştirmeyi başardın
+bizi hangi zorluklar ayırabilirki? 💖
+
+Her adımında bana biraz daha yaklaştın.
+Bu yolun sonu yok sevgilim,
+çünkü kalplerimiz hep bir olacak 💘
+        </p>
+        <div class="win-buttons">
+            <!-- BU LİNKLERİ KENDİ SAYFALARINA GÖRE DEĞİŞTİREBİLİRSİN -->
+            <a href="yenibolum2.html">⬅ Geri</a>
+            <a href="yenibolum4.html">İleri ➜</a>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ============================
+   LABİRENT AYARLARI
+============================ */
+
+const mazeCanvas = document.getElementById("maze-canvas");
+const ctx = mazeCanvas.getContext("2d");
+
+// Boyut ne kadar büyükse o kadar zor
+const MAZE_SIZE = 41;      // hücre sayısı (tek sayı)
+const CELL_SIZE = 10;      // piksel
+const PADDING = 10;        // #maze-box padding'i ile aynı
+
+mazeCanvas.width  = MAZE_SIZE * CELL_SIZE;
+mazeCanvas.height = MAZE_SIZE * CELL_SIZE;
+
+// 1 = duvar, 0 = yol
+let maze = Array.from({ length: MAZE_SIZE }, () =>
+    Array(MAZE_SIZE).fill(1)
+);
+
+// Labirent üretimi – Recursive backtracking
+function generateMaze(x, y) {
+    const dirs = [
+        [ 0, -2],
+        [ 2,  0],
+        [ 0,  2],
+        [-2,  0]
+    ].sort(() => Math.random() - 0.5);
+
+    for (const [dx, dy] of dirs) {
+        const nx = x + dx;
+        const ny = y + dy;
+
+        if (
+            nx > 0 && nx < MAZE_SIZE - 1 &&
+            ny > 0 && ny < MAZE_SIZE - 1 &&
+            maze[ny][nx] === 1
+        ) {
+            maze[ny][nx] = 0;
+            maze[y + dy / 2][x + dx / 2] = 0;
+            generateMaze(nx, ny);
+        }
+    }
+}
+
+// Başlangıç noktası
+maze[1][1] = 0;
+generateMaze(1, 1);
+
+// Çıkış hücresini de açık yap
+maze[MAZE_SIZE - 2][MAZE_SIZE - 2] = 0;
+
+// Labirenti çiz
+function drawMaze() {
+    // zemin
+    ctx.fillStyle = "#ffe6f5";
+    ctx.fillRect(0, 0, mazeCanvas.width, mazeCanvas.height);
+
+    // duvarlar
+    ctx.fillStyle = "#b30047";
+    for (let y = 0; y < MAZE_SIZE; y++) {
+        for (let x = 0; x < MAZE_SIZE; x++) {
+            if (maze[y][x] === 1) {
+                ctx.fillRect(
+                    x * CELL_SIZE,
+                    y * CELL_SIZE,
+                    CELL_SIZE,
+                    CELL_SIZE
+                );
+            }
+        }
+    }
+}
+
+drawMaze();
+
+/* ============================
+   OYUNCU & ÇIKIŞ KONUMU
+============================ */
+
+const mazeBox   = document.getElementById("maze-box");
+const playerEl  = document.getElementById("player");
+const exitEl    = document.getElementById("exit-icon");
+const startLbl  = document.getElementById("start-label");
+const exitLbl   = document.getElementById("exit-label");
+
+let startX = 1, startY = 1;
+let exitX  = MAZE_SIZE - 2, exitY = MAZE_SIZE - 2;
+
+let px = startX;
+let py = startY;
+
+// Hücre -> piksel çevir
+function cellToPos(x, y) {
+    return {
+        left: PADDING + x * CELL_SIZE,
+        top:  PADDING + y * CELL_SIZE
+    };
+}
+
+function updatePositions() {
+    const pPos = cellToPos(px, py);
+    playerEl.style.left = pPos.left + "px";
+    playerEl.style.top  = pPos.top  + "px";
+
+    const ePos = cellToPos(exitX, exitY);
+    exitEl.style.left = ePos.left + "px";
+    exitEl.style.top  = ePos.top  + "px";
+
+    const sPos = cellToPos(startX, startY);
+    startLbl.style.left = sPos.left + "px";
+    startLbl.style.top  = (sPos.top) + "px";
+
+    const exPos = cellToPos(exitX, exitY);
+    exitLbl.style.left = exPos.left + "px";
+    exitLbl.style.top  = (exPos.top) + "px";
+}
+
+updatePositions();
+
+/* ============================
+   HAREKET KONTROLÜ
+============================ */
+
+function tryMove(dx, dy) {
+    const nx = px + dx;
+    const ny = py + dy;
+
+    // sınır ve duvar kontrolü
+    if (
+        nx >= 0 && nx < MAZE_SIZE &&
+        ny >= 0 && ny < MAZE_SIZE &&
+        maze[ny][nx] === 0
+    ) {
+        px = nx;
+        py = ny;
+        updatePositions();
+        checkWin();
+    }
+}
+
+document.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase();
+    if (["arrowup","w"].includes(key))    { e.preventDefault(); tryMove(0,-1); }
+    else if (["arrowdown","s"].includes(key)) { e.preventDefault(); tryMove(0, 1); }
+    else if (["arrowleft","a"].includes(key)) { e.preventDefault(); tryMove(-1,0); }
+    else if (["arrowright","d"].includes(key)){ e.preventDefault(); tryMove(1, 0); }
+});
+
+/* ============================
+   KAZANMA DURUMU
+============================ */
+
+const winOverlay = document.getElementById("win-overlay");
+
+function checkWin() {
+    if (px === exitX && py === exitY) {
+        winOverlay.style.display = "flex";
+    }
+}
+</script>
+
+</body>
+</html>

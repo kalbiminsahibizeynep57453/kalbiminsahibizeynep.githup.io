@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Final 💖</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        font-family: 'Playfair Display', serif;
+        color: white;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    /* Aşağıdan yukarı kayan yazı (enter destekli) */
+    #scrollText {
+        position: absolute;
+        bottom: -180vh; /* tamamen görünmez, en aşağıdan başlar */
+        width: 100%;
+        font-size: 1.6em;
+        line-height: 1.8em;
+        white-space: pre-line; /* ENTER ile alt satır çalışır */
+        animation: scrollUp 75s linear forwards;
+    }
+
+    @keyframes scrollUp {
+        0%   { bottom: -180vh; opacity: 1; }
+        80%  { opacity: 1; }
+        100% { bottom: 120vh; opacity: 0; }
+    }
+
+    /* Final yazısı */
+    #finalMessage {
+        position: fixed;
+        top: 40%;
+        width: 100%;
+        font-size: 2em;
+        opacity: 0;
+        animation: finalAppear 3s forwards;
+        animation-delay: 70s; 
+    }
+
+    @keyframes finalAppear {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    /* Butonlar */
+    #buttons {
+        position: fixed;
+        bottom: 10%;
+        width: 100%;
+        opacity: 0;
+        animation: buttonAppear 3s forwards;
+        animation-delay: 75s;
+    }
+
+    @keyframes buttonAppear {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    .btn {
+        padding: 12px 28px;
+        background: white;
+        border-radius: 12px;
+        color: #222222;
+        font-size: 1.1em;
+        text-decoration: none;
+        margin: 10px;
+        transition: 0.3s;
+        font-weight: bold;
+        border: 2px solid #ffffff;
+    }
+
+    .btn:hover {
+        background: #f2f2f2;
+        transform: scale(1.08);
+    }
+</style>
+</head>
+<body>
+
+<!-- AŞAĞIDAN YUKARI AKAN YAZI -->
+<div id="scrollText">
+Yıldızlar ay ışığına dökülürken sustu gece,
+Kadim kitaplar fısıldadı seni tozlu rafların ötesinde.
+Bir uçurum kıyısında ürperen güvercin gibi titredi kalbim,
+Ateş değdi yüreğime; peri de iblis de eğildi bu sevdanın önünde.
+
+Rüzgar savururken ormanı, çöktü üzerime gurbetin sessiz yükü,
+Gün ışığına düş olup indi adın kalbimin en derin gölgeli köşesine.
+Anmak seni bir yemin oldu, mekan daraldı, esaretle ağırlaştı hasret,
+Pranga gibi çöktü gece; bir bakışın bile kıyamet getirirdi içime.
+
+Geceyle gündüz dövüşürken içimde, çıplak ruhum kül rengine büründü,
+Günahkar bir nefes gibi titredi göğsüm, yüreğim mahşere doğru yürüdü.
+Hayal sonsuz ufuklara aktı; her yıldız seninle soldu, seninle dirildi,
+Felek bile şaştı bu aşka; kaderim adınla yeniden yazıldı, yeniden büyüdü.
+
+Yaralı bir dert gibi kök saldın aklımın en sessiz yerine,
+Yalan sözler merhem olmadı; kalbim sensiz hep eksik, hep eğri bir çizgide.
+Dağlar kadar yılmaz bir ölüm taşıdım içimde, seni saklayan gizli bir sükunetle,
+Zaman taş kesilse bile sen oldun göklerde bana eş, kaderimdeki tek gerçeğimle.
+
+Saçlarından dökülen geceleri özledim; her karanlık seninle aydın olurdu bana,
+Her yıldızda adını yazdım, her rüzgarda sesini duydum uzak diyarlara.
+Bu yürek ateşten bir ülke, bu ruh seninle yoğrulmuş bir yarına,
+Ve bil sevgilim: Sonsuzluk çağırsa bile, ben yine sana yanarım, yalnız sana. 💖
+</div>
+
+<!-- SON YAZISI -->
+<div id="finalMessage">
+  Bu bir son değil…<br>Sadece bir başlangıç. 💫
+</div>
+
+<!-- BUTONLAR -->
+<div id="buttons">
+    <a class="btn" href="mesaj5.html">⬅ Geri</a>
+    <a class="btn" href="geçiş.html">İleri ➡</a>
+</div>
+
+</body>
+</html>

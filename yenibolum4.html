@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aşk Puzzle 💖</title>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: radial-gradient(circle, #ffb3d9, #ff4da6, #cc0066);
+        font-family: 'Playfair Display', serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    #game {
+        display: flex;
+        gap: 25px;
+    }
+
+    /* Sol taraftaki parçalar */
+    #pieces {
+        width: 340px;
+        height: 340px;
+        background: rgba(255,255,255,0.9);
+        border-radius: 20px;
+        padding: 10px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+        display: flex;
+        flex-wrap: wrap;
+        overflow: auto;
+        justify-content: center;
+    }
+
+    .piece {
+        width: 55px;
+        height: 55px;
+        margin: 5px;
+        background-size: 330px 330px;
+        border-radius: 5px;
+        cursor: grab;
+    }
+
+    /* Puzzle tahtası */
+    #board {
+        width: 330px;
+        height: 330px;
+        background: rgba(255,245,250,0.95);
+        border-radius: 20px;
+        display: grid;
+        grid-template-columns: repeat(6, 55px);
+        grid-template-rows: repeat(6, 55px);
+        gap: 5px;
+        padding: 10px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.4);
+    }
+
+    .slot {
+        width: 55px;
+        height: 55px;
+        background: #ffe0f0;
+        border-radius: 5px;
+    }
+
+    /* Bitince çıkan ekran */
+    #winBox {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 20px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        color: #b30047;
+        font-size: 1.2em;
+        z-index: 10;
+    }
+
+    #winBox button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        border: none;
+        background: #ff4da6;
+        color: white;
+        border-radius: 10px;
+        font-size: 1em;
+        cursor: pointer;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="game">
+    <div id="pieces"></div>
+    <div id="board"></div>
+</div>
+
+<div id="winBox">
+    💖 Tebrikler Aşkım! 💖  
+    <br><br>
+    Puzzle'ı başarıyla tamamladın!  
+    <br><br>
+    <button onclick="location.href='yenibolum3.html'">⬅ Geri</button>
+    <button onclick="location.href='finalson.html'">İleri ➜</button>
+</div>
+
+<script>
+/* ============================
+      PUZZLE AYARLARI
+============================ */
+
+const rows = 6;
+const cols = 6;
+const totalPieces = rows * cols;
+
+const image = "images/Puzzle1.jpg";   // Kullanılacak fotoğraf
+
+const piecesContainer = document.getElementById("pieces");
+const board = document.getElementById("board");
+
+/* Slotları oluştur */
+for (let i = 0; i < totalPieces; i++) {
+    const slot = document.createElement("div");
+    slot.classList.add("slot");
+    slot.dataset.index = i;
+    slot.addEventListener("drop", dropPiece);
+    slot.addEventListener("dragover", (e) => e.preventDefault());
+    board.appendChild(slot);
+}
+
+/* Parçaları oluştur */
+let pieces = [];
+
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+
+        let piece = document.createElement("div");
+        piece.classList.add("piece");
+        piece.draggable = true;
+
+        let index = i * cols + j;
+        piece.dataset.index = index;
+
+        piece.style.backgroundImage = `url(${image})`;
+        piece.style.backgroundPosition = `-${j * 55}px -${i * 55}px`;
+
+        piece.addEventListener("dragstart", dragPiece);
+
+        pieces.push(piece);
+    }
+}
+
+/* Parçaları karıştır */
+pieces.sort(() => Math.random() - 0.5);
+
+/* Parçaları sol tarafa ekle */
+pieces.forEach(p => piecesContainer.appendChild(p));
+
+let draggedPiece = null;
+
+function dragPiece(e) {
+    draggedPiece = e.target;
+}
+
+function dropPiece(e) {
+    if (!draggedPiece) return;
+
+    const targetIndex = e.target.dataset.index;
+    const pieceIndex = draggedPiece.dataset.index;
+
+    if (targetIndex === pieceIndex) {
+        e.target.appendChild(draggedPiece);
+        draggedPiece.style.cursor = "default";
+        draggedPiece.draggable = false;
+
+        checkWin();
+    }
+}
+
+/* Puzzle tamamlandı mı? */
+function checkWin() {
+    const slots = document.querySelectorAll(".slot");
+    let correct = 0;
+
+    slots.forEach(slot => {
+        if (slot.children.length > 0) {
+            let piece = slot.children[0];
+            if (piece.dataset.index === slot.dataset.index) correct++;
+        }
+    });
+
+    if (correct === totalPieces) {
+        document.getElementById("winBox").style.display = "block";
+    }
+}
+</script>
+
+</body>
+</html>

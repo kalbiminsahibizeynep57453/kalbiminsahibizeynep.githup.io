@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mesaj 1 💌</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+body {font-family: 'Playfair Display', serif; background-color: #FF4D4D; color: #3B0A0A; text-align: center; padding:50px 20px; position:relative; min-height:50vh; overflow-x:hidden;}
+h1 {font-size:2em; margin-bottom:30px; color:#E8C07D; animation:fadeIn 1s ease-in;}
+.message-text { white-space: pre-line; background-color: rgba(255,245,245,0.9); display:inline-block; padding:150px 10px; border-radius:15px; font-size:0,5em; box-shadow:0 4px 10px rgba(0,0,0,0.1); position:relative; animation:fadeIn 2s ease-in;}
+.photo {position:absolute; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition: transform 0.3s;}
+.photo:hover {transform:scale(1.05);}
+button {margin-top:20px; background-color:#F5C2C2; color:#3B0A0A; border:none; padding:12px 25px; border-radius:15px; cursor:pointer; font-weight:bold; font-size:1em; transition:background 0.3s; position:relative; z-index:10;}
+button:hover {background-color:#E8C07D;}
+.floating-heart {position:absolute; font-size:24px; animation: floatHeart 6s infinite; opacity:0.8;}
+@keyframes fadeIn {from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);}}
+@keyframes floatHeart {0% {transform:translateY(0px) rotate(0deg); opacity:0.7;} 50% {transform:translateY(-150px) rotate(15deg); opacity:1;} 100% {transform:translateY(0px) rotate(-10deg); opacity:0.7;}}
+.spark {position:absolute; width:8px; height:8px; background:#E8C07D; border-radius:50%; opacity:0.8; animation:sparkle 1.5s linear infinite;}
+@keyframes sparkle {0% {transform:translateY(0) scale(0.5); opacity:0.7;} 50% {transform:translateY(-30px) scale(1); opacity:1;} 100% {transform:translateY(0) scale(0.5); opacity:0;}}
+</style>
+</head>
+<body>
+
+<h1>Zeynebim iyiki girdin hayatıma iyiki varsın sevgilim 💫</h1>
+<div class="message-text">Bana istek attığın günü hatırlıyormusun olm bu kim şimdi durduk yere
+demiştim kendi kendime hayatımda verdiğim en iyi karar
+herhalde o isteği kabul edip sana mesaj atmak oldu
+sen cevap verince ooo bide cevap veriyor ciğerim demiştim 😂
+Tabi o zamanlar dünyanın en muteşem kızı ile konuşacağımı bilmiyordum💖</div>
+
+<!-- Fotoğraflar -->
+<img src="images/mesaj1.jpg" class="photo" style="top:150px; right:250px; width:120px;">
+<img src="images/mesaj2.jpg" class="photo" style="top:146px; left:220px; width:150px;">
+<img src="images/mesaj3.jpg" class="photo" style="top:330px; right:250px; width:120px;">
+
+
+<!-- Kalpler -->
+<div class="floating-heart" style="left:10%; top:80%;">💖</div>
+<div class="floating-heart" style="left:50%; top:90%;">💌</div>
+<div class="floating-heart" style="left:80%; top:75%;">💖</div>
+
+<div style="text-align: center; margin-top: 20px;">
+  <a href="index.html" style="margin-right: 10px; padding: 10px 20px; background-color: #555; color: white; text-decoration: none; border-radius: 10px;">⬅ Geri</a>
+  <a href="mesaj2.html" style="padding: 10px 20px; background-color: #ff4081; color: white; text-decoration: none; border-radius: 10px;">İleri ➡</a>
+</div>
+
+<script>
+function createSparks() {
+  const count=10;
+  for(let i=0;i<count;i++){
+    const spark=document.createElement('div');
+    spark.className='spark';
+    spark.style.left=Math.random()*window.innerWidth+'px';
+    spark.style.top=Math.random()*window.innerHeight+'px';
+    document.body.appendChild(spark);
+    setTimeout(()=>{spark.remove();},1500);
+  }
+}
+
+</script>
+
+</body>
+</html>

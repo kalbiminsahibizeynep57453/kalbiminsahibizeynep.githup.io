@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalbimin Kraliçesine 💖</title>
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #FF4D4D;
+      color: #3B0A0A;
+      text-align: center;
+      padding: 40px;
+      transition: background 1s;
+    }
+    h1 {
+      color: #E8C07D;
+      font-size: 2.2em;
+    }
+    .game-step {
+      display: none;
+      margin-top: 50px;
+    }
+    .active {
+      display: block;
+      animation: fadeIn 1s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .photos img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin: 10px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .photos img:hover {
+      transform: scale(1.05);
+      border-color: #E8C07D;
+    }
+    input[type="text"] {
+      padding: 10px;
+      border: 2px solid #E8C07D;
+      border-radius: 10px;
+      font-size: 1em;
+      width: 60%;
+    }
+    button {
+      margin-top: 15px;
+      background-color: #F5C2C2;
+      color: #3B0A0A;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #E8C07D;
+    }
+    .message {
+      margin-top: 20px;
+      font-style: italic;
+      color: #3B0A0A;
+    }
+  </style>
+</head>
+<body>
+
+
+  <h1>Kalbimin Kraliçesine 💖</h1>
+  <p>Aşkımızın kapısını açmak için üç adımı tamamla pamuk şekerim...</p>
+
+  <!-- AŞAMA 1 -->
+  <div class="game-step active" id="step1">
+    <h2>1. Adım: Hangisine bakınca beni benden alıyor sence?</h2>
+    <div class="photos">
+      <img src="images/photo1.jpg" alt="1. Fotoğraf" onclick="checkPhoto(1)">
+      <img src="images/photo2.jpg" alt="2. Fotoğraf" onclick="checkPhoto(2)">
+      <img src="images/photo3.jpg" alt="3. Fotoğraf" onclick="checkPhoto(3)">
+      <img src="images/photo4.jpg" alt="4. Fotoğraf" onclick="checkPhoto(4)">
+    </div>
+    <p class="message" id="msg1"></p>
+    <button id="next1" style="display:none;" onclick="nextStep(2)">Sonraki 💖</button>
+  </div>
+
+  <!-- AŞAMA 2 -->
+  <div class="game-step" id="step2">
+    <h2>2. Adım: Dünya ikinci güneşine ne zaman kavuştu birtanem?</h2>
+    <p>SENİ ÇOK SEVİYORUM ZEYNEBİMMM</p>
+    <input type="text" id="dateInput" placeholder="gg.aa.yyyy">
+    <button onclick="checkDate()">Cevabı Gönder</button>
+    <p class="message" id="msg2"></p>
+    <button id="next2" style="display:none;" onclick="nextStep(3)">Sonraki 💖</button>
+  </div>
+
+  <!-- AŞAMA 3 -->
+  <div class="game-step" id="step3">
+    <h2>3. Adım: Acaba beni ne kadar tanıyorsun... en sevdiğim renk ne Zeynep hanım?</h2>
+    <p>BUNU BİLMEN LAZIM BİTANEM 💕</p>
+    <input type="text" id="favInput" placeholder="cevabını yaz...">
+    <button onclick="checkFav()">Cevabı Gönder</button>
+    <p class="message" id="msg3"></p>
+    <button id="next3" style="display:none;" onclick="nextStep('final')">Sonraki 💖</button>
+  </div>
+
+  <!-- GİRİŞ -->
+  <div class="game-step" id="finalStep">
+    <h2>💞 Aşkımızın kapısı açılıyor 💞</h2>
+    <p>Hoş geldin Kalbimin Kraliçesi. Aşkımızın yolculuğu seni bekliyor...</p>
+    <button onclick="location.href='mesaj1.html'">İlerle Bebeğim 💌</button>
+  </div>
+
+  <script>
+    // AŞAMA 1
+    function checkPhoto(num) {
+      const msg = document.getElementById("msg1");
+      if (num === 3) {
+        msg.textContent = "Evet... işte bu fotoğrafın beni benden alıyor hayatım 💖";
+        document.getElementById("next1").style.display = "inline-block";
+      } else {
+        msg.textContent = "Hayır o değil ya Bociiiii bir daha dene 😂";
+      }
+    }
+
+    // AŞAMA 2
+    function checkDate() {
+      const date = document.getElementById("dateInput").value.trim();
+      const msg = document.getElementById("msg2");
+      const correctDate = "06.06.2005";
+      if (date === correctDate) {
+        msg.textContent = "O gün dünya seni yani ikinci güneşini kazandı sevgilim 💞";
+        document.getElementById("next2").style.display = "inline-block";
+      } else {
+        msg.textContent = "Kalbini dinle... Ve bir daha dene.";
+      }
+    }
+
+    // AŞAMA 3
+    function checkFav() {
+      const fav = document.getElementById("favInput").value.toLowerCase().trim();
+      const msg = document.getElementById("msg3");
+      const correctAnswer = "mavi";
+      if (fav === correctAnswer) {
+        msg.textContent = "Artık Aşkımızın kapısı sana açılıyor... 💓";
+        document.getElementById("next3").style.display = "inline-block";
+      } else {
+        msg.textContent = "Ohoooo Zeynep o değil tabii ki Bociii 💭";
+      }
+    }
+
+    // GEÇİŞ
+    function nextStep(step) {
+      document.querySelectorAll(".game-step").forEach(div => div.classList.remove("active"));
+      if (step === 2) document.getElementById("step2").classList.add("active");
+      else if (step === 3) document.getElementById("step3").classList.add("active");
+      else if (step === "final") document.getElementById("finalStep").classList.add("active");
+    }
+
+   
+  </script>
+
+</body>
+</html>
