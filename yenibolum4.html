@@ -44,11 +44,10 @@
         width: 55px;
         height: 55px;
         margin: 5px;
-        background-size: 330px 330px !important;
-        background-repeat: no-repeat;
         border-radius: 5px;
         cursor: grab;
         touch-action: none;
+        background-repeat: no-repeat;
     }
 
     #board {
@@ -100,28 +99,18 @@
     }
 
     @media (max-width: 768px) {
-        body { height: auto; padding: 20px 0; }
-
-        #game { flex-direction: column; gap: 18px; }
-
         #pieces, #board {
             width: 280px;
             height: 280px;
-            padding: 8px;
         }
-
         .piece, .slot {
             width: 45px;
             height: 45px;
         }
-
         #board {
             grid-template-columns: repeat(6, 45px);
             grid-template-rows: repeat(6, 45px);
-            gap: 4px;
         }
-
-        .piece { background-size: 270px 270px !important; }
     }
 
     @media (max-width: 500px) {
@@ -129,19 +118,14 @@
             width: 240px;
             height: 240px;
         }
-
         .piece, .slot {
             width: 38px;
             height: 38px;
         }
-
         #board {
             grid-template-columns: repeat(6, 38px);
             grid-template-rows: repeat(6, 38px);
-            gap: 3px;
         }
-
-        .piece { background-size: 230px 230px !important; }
     }
 </style>
 </head>
@@ -162,20 +146,15 @@
 </div>
 
 <script>
-/* ============================
-      PUZZLE AYARLARI
-============================ */
-
 const rows = 6;
 const cols = 6;
 const totalPieces = rows * cols;
-
 const image = "images/Puzzle1.jpg";
 
 const piecesContainer = document.getElementById("pieces");
 const board = document.getElementById("board");
 
-/* Slotları oluştur */
+/* Slotlar */
 for (let i = 0; i < totalPieces; i++) {
     const slot = document.createElement("div");
     slot.classList.add("slot");
@@ -193,17 +172,22 @@ for (let r = 0; r < rows; r++) {
 
         let piece = document.createElement("div");
         piece.classList.add("piece");
+
+        piece.dataset.index = r * cols + c;
+
+        // 🔥 DİNAMİK PARÇA GENİŞLİĞİ
+        setTimeout(() => {
+            let pw = piece.offsetWidth;           // gerçek genişlik
+            let bgSize = pw * cols;               // tüm resmin tam genişliği
+
+            piece.style.backgroundImage = `url(${image})`;
+            piece.style.backgroundSize = `${bgSize}px ${bgSize}px`;
+            piece.style.backgroundPosition =
+                `-${c * pw}px -${r * pw}px`;
+        }, 10);
+
         piece.draggable = true;
-
-        let index = r * cols + c;
-        piece.dataset.index = index;
-
-        /* 🔥 FOTOĞRAF PARÇALAMA TAM DÜZELTİLMİŞ */
-        piece.style.backgroundImage = `url(${image})`;
-        piece.style.backgroundPosition = `-${c * 55}px -${r * 55}px`;
-        piece.style.backgroundSize = `330px 330px`;
-
-        piece.addEventListener("dragstart", dragPiece);
+        piece.addEventListener("dragstart", () => draggedPiece = piece);
 
         pieces.push(piece);
     }
@@ -214,67 +198,46 @@ pieces.forEach(p => piecesContainer.appendChild(p));
 
 let draggedPiece = null;
 
-/* PC drag */
-function dragPiece(e) {
-    draggedPiece = e.target;
-}
-
+/* PC bırakma */
 function dropPiece(e) {
     if (!draggedPiece) return;
 
-    const targetIndex = e.target.dataset.index;
-    const pieceIndex = draggedPiece.dataset.index;
-
-    if (targetIndex === pieceIndex) {
+    if (e.target.dataset.index === draggedPiece.dataset.index) {
         e.target.appendChild(draggedPiece);
-        draggedPiece.style.cursor = "default";
         draggedPiece.draggable = false;
         checkWin();
     }
 }
 
-/* Puzzle tamamlandı mı? */
+/* Kazanma */
 function checkWin() {
-    const slots = document.querySelectorAll(".slot");
     let correct = 0;
 
-    slots.forEach(slot => {
-        if (slot.children.length > 0) {
-            let piece = slot.children[0];
-            if (piece.dataset.index === slot.dataset.index) correct++;
-        }
+    document.querySelectorAll(".slot").forEach(slot => {
+        if (slot.children.length &&
+            slot.children[0].dataset.index === slot.dataset.index)
+            correct++;
     });
 
-    if (correct === totalPieces) {
+    if (correct === totalPieces)
         document.getElementById("winBox").style.display = "block";
-    }
 }
 
-/* ============================
-   DOKUNMATİK (MOBİL)
-============================ */
-
-const isTouchDevice =
-    "ontouchstart" in window ||
-    navigator.maxTouchPoints > 0 ||
-    navigator.msMaxTouchPoints > 0;
-
+/* -------------------------------------------------
+      MOBİL (TOUCH DRAG) — BÜYÜMESİZ, SORUNSUZ
+-------------------------------------------------- */
 let touchGhost = null;
 let activeTouchId = null;
 
-if (isTouchDevice) {
-    const allPieces = document.querySelectorAll(".piece");
-    allPieces.forEach(piece => {
-        piece.draggable = false;
-        piece.addEventListener("touchstart", handleTouchStart, { passive: false });
-    });
-}
+document.querySelectorAll(".piece").forEach(piece => {
+    piece.addEventListener("touchstart", touchStart, { passive: false });
+});
 
-function handleTouchStart(e) {
+function touchStart(e) {
     e.preventDefault();
 
-    const touch = e.touches[0];
     draggedPiece = e.target;
+    let touch = e.touches[0];
     activeTouchId = touch.identifier;
 
     const rect = draggedPiece.getBoundingClientRect();
@@ -285,50 +248,40 @@ function handleTouchStart(e) {
     touchGhost.style.top = rect.top + "px";
     touchGhost.style.width = rect.width + "px";
     touchGhost.style.height = rect.height + "px";
-    touchGhost.style.margin = "0";
     touchGhost.style.zIndex = "9999";
     touchGhost.style.opacity = "0.9";
     touchGhost.style.pointerEvents = "none";
 
     document.body.appendChild(touchGhost);
 
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
-    document.addEventListener("touchend", handleTouchEnd);
-    document.addEventListener("touchcancel", handleTouchEnd);
+    document.addEventListener("touchmove", touchMove, { passive: false });
+    document.addEventListener("touchend", touchEnd);
 }
 
-function handleTouchMove(e) {
+function touchMove(e) {
     e.preventDefault();
     if (!touchGhost) return;
 
-    let touch = null;
-    for (let t of e.touches) {
-        if (t.identifier === activeTouchId || activeTouchId === null) {
-            touch = t;
-            break;
-        }
-    }
+    let touch = [...e.touches].find(t => t.identifier === activeTouchId);
     if (!touch) return;
 
-    const w = touchGhost.offsetWidth;
-    const h = touchGhost.offsetHeight;
-
-    touchGhost.style.left = (touch.clientX - w / 2) + "px";
-    touchGhost.style.top = (touch.clientY - h / 2) + "px";
+    touchGhost.style.left = (touch.clientX - touchGhost.offsetWidth / 2) + "px";
+    touchGhost.style.top = (touch.clientY - touchGhost.offsetHeight / 2) + "px";
 }
 
-function handleTouchEnd(e) {
-    const touch = e.changedTouches[0];
-    const x = touch.clientX;
-    const y = touch.clientY;
+function touchEnd(e) {
+    let touch = e.changedTouches[0];
+    let x = touch.clientX;
+    let y = touch.clientY;
 
     let placed = false;
 
-    const slots = document.querySelectorAll(".slot");
-    slots.forEach(slot => {
-        const rect = slot.getBoundingClientRect();
+    document.querySelectorAll(".slot").forEach(slot => {
+        let rect = slot.getBoundingClientRect();
 
-        if (x > rect.left && x < rect.right && y > rect.top && y < rect.bottom) {
+        if (x > rect.left && x < rect.right &&
+            y > rect.top && y < rect.bottom) {
+
             if (slot.dataset.index === draggedPiece.dataset.index) {
                 slot.appendChild(draggedPiece);
                 placed = true;
@@ -341,17 +294,14 @@ function handleTouchEnd(e) {
 }
 
 function cleanupTouch() {
-    if (touchGhost && touchGhost.parentNode) {
-        touchGhost.parentNode.removeChild(touchGhost);
-    }
+    if (touchGhost) touchGhost.remove();
     touchGhost = null;
     draggedPiece = null;
     activeTouchId = null;
 
-    document.removeEventListener("touchmove", handleTouchMove);
-    document.removeEventListener("touchend", handleTouchEnd);
-    document.removeEventListener("touchcancel", handleTouchEnd);
+    document.removeEventListener("touchmove", touchMove);
 }
 </script>
+
 </body>
 </html>
