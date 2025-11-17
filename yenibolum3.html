@@ -149,31 +149,40 @@
         background: #f5f5f5;
     }
 
-    /* 📱 M O B İ L  U Y U M L U */
+    /* 📱 Mobil Yön Tuşları — EKLEDİĞİM KISIM */
+    .mobile-controls {
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mobile-controls button {
+        width: 60px;
+        height: 60px;
+        border: none;
+        border-radius: 12px;
+        background: #ff4da6;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    }
+
+    .horizontal-buttons {
+        display: flex;
+        gap: 12px;
+    }
+
     @media (max-width: 768px) {
-
-        h1 {
-            font-size: 1.6em;
-        }
-
-        .wrapper {
-            padding: 12px;
-            transform: scale(0.95);
-        }
-
-        .subtitle {
-            font-size: 0.85em;
-        }
-
-        canvas {
-            max-width: 92vw;
-        }
-
-        #player, #exit-icon {
-            width: 18px;
-            height: 18px;
+        .mobile-controls button {
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
         }
     }
+
 </style>
 </head>
 
@@ -197,6 +206,17 @@
     <div class="info">
         Seni çok seviyorum ay ışığım beni sensiz bırakma 
     </div>
+
+    <!-- 📱 Mobil yön tuşları — EKLEDİĞİM KISIM -->
+    <div class="mobile-controls">
+        <button onclick="tryMove(0,-1)">⬆️</button>
+        <div class="horizontal-buttons">
+            <button onclick="tryMove(-1,0)">⬅️</button>
+            <button onclick="tryMove(1,0)">➡️</button>
+        </div>
+        <button onclick="tryMove(0,1)">⬇️</button>
+    </div>
+
 </div>
 
 <div id="win-overlay">
